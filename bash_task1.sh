@@ -13,4 +13,5 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 	
 	output="${base}.mux.mp4"
 	ffmpeg -i "$file" -i "$audio" -c copy "$output" && rm -- "$file" "$audio"
+
 	done 
