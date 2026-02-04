@@ -20,7 +20,7 @@ This repository contains a collection of Python scripts for cryptographic operat
 ## Description
 
 This project offers practical tools for two distinct purposes:
-1.  **Cryptography**: Python scripts to generate RSA public and private key pairs and to perform AES encryption in Counter (CTR) mode.
+1.  **Cryptography**: Python scripts to generate RSA public and private key pairs and to perform AES encryption in Counter (CTR) mode. **Educational not practical use**
 2.  **Media Muxing**: A bash script designed to combine separate MP4 video files with their corresponding M4A audio files into a single MP4 container.
 
 ## Features
@@ -54,7 +54,9 @@ pip install sympy
 
 ### RSA Key Generation
 
-To generate RSA public and private keys, run the `rsa.py` script:
+Demonstrates the mathematics of RSA key generation using small primes for learning purposes.
+
+run the `rsa.py` script:
 
 ```bash
 python rsa.py
@@ -62,9 +64,11 @@ python rsa.py
 
 This script will generate `pr1`, `pr2`, `n`, `phi`, `e`, `d`, `pubk` (public key), and `prik` (private key) internally. You would need to modify the script to print or save these keys if you wish to use them elsewhere.
 
+Small primes and Python’s random module are intentionally used to keep the math inspectable.
+
 ### AES CTR Mode Encryption
 
-To encrypt a message using AES in CTR mode, run the `ctr.py` script:
+Demonstrates a CTR-like XOR stream cipher to understand counter-based encryption concepts, run the `ctr.py` script:
 
 ```bash
 

@@ -1,4 +1,18 @@
 #Implement AES encryption in CTR mode manually (counter based).
+"""
+Educational demonstration of a CTR-like stream cipher.
+
+⚠️ WARNING
+- This is NOT AES.
+- This is NOT cryptographically secure.
+    Demonstrates a CTR-like XOR stream cipher.
+
+    keystream_block = key_fragment XOR counter
+    ciphertext      = plaintext XOR keystream_block
+
+    This intentionally avoids real AES to keep the math and mechanics visible.
+"""
+
 import os
 
 message = input("enter the massage : ").encode()

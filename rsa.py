@@ -1,3 +1,8 @@
+# EDUCATIONAL RSA IMPLEMENTATION
+# This code is for learning purposes only.
+# It uses insecure key sizes and non-cryptographic randomness.
+# Do NOT use this for real security or production systems.
+
 #Generate an RSA private and public key pair in Python.
 import sympy
 import math
