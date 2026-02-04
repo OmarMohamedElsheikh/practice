@@ -1,6 +1,8 @@
 #!/bin/env bash
 
-find ./ -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
+dir="${1:?Usage: $0 <dir>}"
+
+find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 
 	base="${file%.mp4}"
 	audio="${base}.m4a"
