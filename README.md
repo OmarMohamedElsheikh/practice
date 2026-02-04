@@ -75,10 +75,10 @@ The script will prompt you to enter the message to be encrypted. It will then ge
 
 ### MP4 Muxing Script
 
-To use the `bash_task1.sh` script to merge `.mp4` video files with `.m4a` audio files, navigate to the directory containing your video and audio files and run the script, providing the directory as an argument:
+To use the `mux.sh` script to merge `.mp4` video files with `.m4a` audio files, navigate to the directory containing your video and audio files and run the script, providing the directory as an argument:
 
 ```bash
-./bash_task1.sh /path/to/your/media/directory
+./mux.sh /path/to/your/media/directory
 ```
 
 **Important**:
