@@ -10,6 +10,7 @@ eval set -- "$PARSED"
 
 verbose=0
 dry-run=0
+
 while true; do 
 	case "$1" in 
 		--verbose) verbose=1; shift ;;
@@ -19,6 +20,8 @@ while true; do
 	esac
 done
 
+trap 'echo "Interrupted; exit 1"' SIGINT SIGTERM
+ 
 find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 
 	[[ $verbose -eq 1 ]] && echo "Processing: $file"
@@ -30,6 +33,8 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 	[[ $verbose -eq 1 ]] && echo "Audio found: $audio"
 	
 	output="${base}.mux.mp4"
+	[[ -f "$output" ]] && echo "Skipping $output file exist" && continue
+
 	[[ $dry-run -eq 1 ]] && echo "ffmpeg -i $file -i $audio $output && rm -- $file $audio" && continue
 	
 	ffmpeg -i "$file" -i "$audio" -c copy "$output" && rm -- "$file" "$audio"
