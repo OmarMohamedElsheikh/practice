@@ -2,7 +2,8 @@
 
 shopt -s nullglob
 
-dir="${1:?Usage: $0 <dir>}"
+dir="${1:?Usage: $0 [--verbose] [--dry-run] <dir>}"
+
 
 PARSED=$(getopt --options "" --long verbose,dry-run -- "$@") || exit 1
 eval set -- "$PARSED"
@@ -20,12 +21,17 @@ done
 
 find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 
+	[[ $verbose -eq 1 ]] && echo "Processing: $file"
+	
 	base="${file%.mp4}"
 	audio="${base}.m4a"
 
-	[[ -f "$audio" ]] || continue
+	[[ -f "$audio" ]] || { [[ $verbose -eq 1 ]] && echo "skipping: $file , missing audio file"; continue;}
+	[[ $verbose -eq 1 ]] && echo "Audio found: $audio"
 	
 	output="${base}.mux.mp4"
+	[[ $dry-run -eq 1 ]] && echo "ffmpeg -i $file -i $audio $output && rm -- $file $audio" && continue
+	
 	ffmpeg -i "$file" -i "$audio" -c copy "$output" && rm -- "$file" "$audio"
 
 	done 
