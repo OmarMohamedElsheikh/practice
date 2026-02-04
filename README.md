@@ -26,7 +26,7 @@ This repository contains a collection of Python scripts for cryptographic operat
 
 ### Prerequisites
 
--   **`ffmpeg`**: Required for `bash_task1.sh`. Ensure `ffmpeg` is installed and available in your system's PATH. On Ubuntu/Debian, you can install it via `sudo apt-get install ffmpeg`.
+-   **`ffmpeg`**: Required for `mux.sh`. Ensure `ffmpeg` is installed and available in your system's PATH. On Ubuntu/Debian, you can install it via `sudo apt-get install ffmpeg`.
 
 ### Steps
 
@@ -45,10 +45,10 @@ The script will prompt you to enter the message to be encrypted. It will then ge
 
 ### MP4 Muxing Script
 
-To use the `bash_task1.sh` script to merge `.mp4` video files with `.m4a` audio files, navigate to the directory containing your video and audio files and run the script, providing the directory as an argument:
+To use the `mux.sh` script to merge `.mp4` video files with `.m4a` audio files, navigate to the directory containing your video and audio files and run the script, providing the directory as an argument:
 
 ```bash
-./bash_task1.sh /path/to/your/media/directory
+./mux.sh /path/to/your/media/directory
 ```
 
 **Important**:
@@ -58,4 +58,4 @@ To use the `bash_task1.sh` script to merge `.mp4` video files with `.m4a` audio 
 
 ## Contact
 
-For any questions or suggestions, please contact the repository maintainer.
+omarmohammedomarali@gmail.com
