@@ -37,6 +37,6 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 
 	[[ $dry-run -eq 1 ]] && echo "ffmpeg -i $file -i $audio $output && rm -- $file $audio" && continue
 	
-	ffmpeg -i "$file" -i "$audio" -c copy "$output" && rm -- "$file" "$audio"
+	ffmpeg -i "$file" -i "$audio" -c copy "$output" && rm -- "$file" "$audio" >> /dev/null
 
 	done 
