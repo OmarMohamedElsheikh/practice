@@ -24,8 +24,9 @@ The muxing script is especially useful when you have separated video and audio s
 - Finds `.mp4` video files and matching audio files (`.m4a`, `.aac`, `.mp3`, `.opus`, `.mka`, `.mp4`)
 - Creates a new file named `<basename>.mux.mp4`
 - Uses **stream copy** (`-c copy`) → fast, no quality loss
-- **Dry-run** mode (`--dry-run`) to preview actions without changes
+- **Dryrun** mode (`--dryrun`) to preview actions without changes
 - **Verbose** mode (`--verbose`) for detailed output
+- **rencode** mode (`--rencode`) for rencoding the video with ffmpeg default rencoding if needed
 - Safety checks:
   - Skips if output already exists
   - Only deletes originals if mux succeeds **and** output file has non-zero size
