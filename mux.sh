@@ -5,22 +5,25 @@ set -euo pipefail
 
 
 
-PARSED=$(getopt --options "" --long verbose,dryrun -- "$@") || exit 1
+PARSED=$(getopt --options "" --long verbose,dryrun,rencode -- "$@") || exit 1
 eval set -- "$PARSED"
 
 verbose=0
 dryrun=0
+rencode=0
+
 
 while true; do 
 	case "$1" in 
 		--verbose) verbose=1; shift ;;
 		--dryrun) dryrun=1; shift ;;
+		--rencode) rencode=1; shift ;;
 		--) shift; break ;;
 		*) echo "Usage: $0 [--verbose] [--dryrun] <dir>"
 	esac
 done
 
-dir="${1:?Usage: $0 [--verbose] [--dryrun] <dir>}"
+dir="${1:?Usage: $0 [--verbose] [--dryrun] [--rencode] <dir>}"
 
 trap 'echo "Interrupted; exit 1"' SIGINT SIGTERM
  
@@ -43,8 +46,14 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read  -r -d '' file; do
 	[[ -f "$output" ]] && echo "Skipping $output file exist" && continue
 
 	[[ $dryrun -eq 1 ]] && echo "ffmpeg -i $file -i $audio $output && rm -- $file $audio" && continue
-	
-	if ffmpeg -loglevel error -i "$file" -i "$audio" -c copy "$output" 2>&1; then
+
+	if [[ $rencode -eq 0 ]]; then 
+		cmd=(ffmpeg -loglevel error -i "$file" -i "$audio" -c copy "$output")
+	else 
+		cmd=(ffmpeg -loglevel error -i "$file" -i "$audio" "$output")
+	fi
+
+	if "${cmd[@]}" 2>&1; then 
 	        if [[ -s "$output" ]]; then
 	            echo "Success → removing originals"
 	            rm -- "$file" "$audio"
