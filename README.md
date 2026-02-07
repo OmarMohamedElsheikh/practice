@@ -16,17 +16,33 @@ This repository contains a collection of Python scripts for cryptographic operat
 
 ## Description
 
-2.  **Media Muxing**: A bash script designed to combine separate MP4 video files with their corresponding M4A audio files into a single MP4 container.
+**Media Processing** — a safe, automated way to combine video-only `.mp4` files with audio-only `.m4a` (or similar) files into properly muxed MP4 containers using FFmpeg's stream copy mode (`-c copy`).
 
+The muxing script is especially useful when you have separated video and audio streams (e.g., from screen recordings, downloads, or editing workflows) and want to merge them without re-encoding.
 ## Features
 
--   **MP4 Muxing**: Automates the process of merging `.mp4` video files with same-named `.m4a` audio files, creating a new `*.mux.mp4` file and removing the originals.
+- Finds `.mp4` video files and matching audio files (`.m4a`, `.aac`, `.mp3`, `.opus`, `.mka`, `.mp4`)
+- Creates a new file named `<basename>.mux.mp4`
+- Uses **stream copy** (`-c copy`) → fast, no quality loss
+- **Dry-run** mode (`--dry-run`) to preview actions without changes
+- **Verbose** mode (`--verbose`) for detailed output
+- Safety checks:
+  - Skips if output already exists
+  - Only deletes originals if mux succeeds **and** output file has non-zero size
+  - Keeps originals on any failure
+- Handles filenames with spaces, special characters, etc.
+
 
 ## Installation
 
 ### Prerequisites
 
--   **`ffmpeg`**: Required for `mux.sh`. Ensure `ffmpeg` is installed and available in your system's PATH. On Ubuntu/Debian, you can install it via `sudo apt-get install ffmpeg`.
+- **Bash** ≥ 4 (most Linux/macOS systems)
+- **FFmpeg** with libavformat/libavcodec support (needed for muxing)
+  - Ubuntu/Debian: `sudo apt update && sudo apt install ffmpeg`
+  - macOS (Homebrew): `brew install ffmpeg`
+  - Windows: use WSL or download from ffmpeg.org
+- `getopt` command (usually pre-installed on Linux/macOS)
 
 ### Steps
 
@@ -52,7 +68,6 @@ To use the `mux.sh` script to merge `.mp4` video files with `.m4a` audio files, 
 ```
 
 **Important**:
--   The script looks for `.mp4` and `.m4a` files with the same base name (e.g., `video.mp4` and `video.m4a`).
 -   It will create a new file named `video.mux.mp4`.
 -   **It will remove the original `.mp4` and `.m4a` files upon successful muxing.**
 
