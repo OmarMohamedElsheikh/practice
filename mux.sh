@@ -1,9 +1,8 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 shopt -s nullglob
 set -euo pipefail
 
-dir="${1:?Usage: $0 [--verbose] [--dryrun] <dir>}"
 
 
 PARSED=$(getopt --options "" --long verbose,dryrun -- "$@") || exit 1
@@ -21,10 +20,12 @@ while true; do
 	esac
 done
 
+dir="${1:?Usage: $0 [--verbose] [--dryrun] <dir>}"
+
 trap 'echo "Interrupted; exit 1"' SIGINT SIGTERM
  
-find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
-
+find "$dir" -type f -name "*.mp4" -print0 | while IFS= read  -r -d '' file; do
+	
 	[[ $verbose -eq 1 ]] && echo "Processing: $file"
 	
 	base="${file%.mp4}"
@@ -35,7 +36,7 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
         [[ -f $cand ]] && { audio=$cand; break; }
     done
     
-	[[ -f "$audio" ]] || { [[ $verbose -eq 1 ]] && echo "skipping: $file , missing audio file"; continue;}
+	[[ -n "$audio" ]] || { [[ $verbose -eq 1 ]] && echo "skipping: $file , missing audio file"; continue;}
 	[[ $verbose -eq 1 ]] && echo "Audio found: $audio"
 	
 	output="${base}.mux.mp4"
