@@ -28,8 +28,13 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 	[[ $verbose -eq 1 ]] && echo "Processing: $file"
 	
 	base="${file%.mp4}"
-	audio="${base}.m4a"
+	audio_candidates=("$base".{m4a,aac,mp4,mp3,opus,mka})
 
+    audio=""
+    for cand in "${audio_candidates[@]}"; do
+        [[ -f $cand ]] && { audio=$cand; break; }
+    done
+    
 	[[ -f "$audio" ]] || { [[ $verbose -eq 1 ]] && echo "skipping: $file , missing audio file"; continue;}
 	[[ $verbose -eq 1 ]] && echo "Audio found: $audio"
 	
