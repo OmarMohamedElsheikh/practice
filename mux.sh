@@ -1,6 +1,7 @@
 #!/bin/env bash
 
 shopt -s nullglob
+set -euo pipefail
 
 dir="${1:?Usage: $0 [--verbose] [--dry-run] <dir>}"
 
@@ -37,6 +38,16 @@ find "$dir" -type f -name "*.mp4" -print0 | while IFS= read -d -r '' file; do
 
 	[[ $dry-run -eq 1 ]] && echo "ffmpeg -i $file -i $audio $output && rm -- $file $audio" && continue
 	
-	ffmpeg -i "$file" -i "$audio" -c copy "$output" && rm -- "$file" "$audio" >> /dev/null
-
+	if ffmpeg -loglevel error -i "$file" -i "$audio" -c copy "$output" 2>&1; then
+	        if [[ -s "$output" ]]; then
+	            echo "Success → removing originals"
+	            rm -- "$file" "$audio"
+	        else
+	            echo "ERROR: output file is empty! Keeping originals." >&2
+	            rm -f -- "$output" 2>/dev/null || true
+	        fi
+	    else
+	        echo "ERROR: ffmpeg failed on $file — originals kept" >&2
+	        rm -f -- "$output" 2>/dev/null || true
+	    fi
 	done 
