@@ -12,16 +12,19 @@ This repository contains a collection of Python scripts for cryptographic operat
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
 - [Usage](#usage)
+  - [MP4 Muxing Script](#mp4-muxing-script)
   - [RSA Key Generation](#rsa-key-generation)
   - [AES CTR Mode Encryption](#aes-ctr-mode-encryption)
-  - [MP4 Muxing Script](#mp4-muxing-script)
 - [Contact](#contact)
 
 ## Description
 
 This project offers practical tools for two distinct purposes:
 1.  **Cryptography**: Python scripts to generate RSA public and private key pairs and to perform AES encryption in Counter (CTR) mode. **Educational not practical use**
-2.  **Media Muxing**: A bash script designed to combine separate MP4 video files with their corresponding M4A audio files into a single MP4 container.
+
+2.  **Media Processing** — a safe, automated way to combine video-only `.mp4` files with audio-only `.m4a` (or similar) files into properly muxed MP4 containers using FFmpeg's stream copy mode (`-c copy`).
+
+The muxing script is especially useful when you have separated video and audio streams (e.g., from screen recordings, downloads, or editing workflows) and want to merge them without re-encoding.
 
 ## Features
 
@@ -52,6 +55,37 @@ pip install sympy
 
 ## Usage
 
+
+### MP4 Muxing Script
+
+## Description
+
+**Media Processing** — a safe, automated way to combine video-only `.mp4` files with audio-only `.m4a` (or similar) files into properly muxed MP4 containers using FFmpeg's stream copy mode (`-c copy`).
+
+The muxing script is especially useful when you have separated video and audio streams (e.g., from screen recordings, downloads, or editing workflows) and want to merge them without re-encoding.
+## Features
+
+- Finds `.mp4` video files and matching audio files (`.m4a`, `.aac`, `.mp3`, `.opus`, `.mka`, `.mp4`)
+- Creates a new file named `<basename>.mux.mp4`
+- Uses **stream copy** (`-c copy`) → fast, no quality loss
+- **Dry-run** mode (`--dry-run`) to preview actions without changes
+- **Verbose** mode (`--verbose`) for detailed output
+- Safety checks:
+  - Skips if output already exists
+  - Only deletes originals if mux succeeds **and** output file has non-zero size
+  - Keeps originals on any failure
+- Handles filenames with spaces, special characters, etc.
+
+### Prerequisites
+
+- **Bash** ≥ 4 (most Linux/macOS systems)
+- **FFmpeg** with libavformat/libavcodec support (needed for muxing)
+  - Ubuntu/Debian: `sudo apt update && sudo apt install ffmpeg`
+  - macOS (Homebrew): `brew install ffmpeg`
+  - Windows: use WSL or download from ffmpeg.org
+- `getopt` command (usually pre-installed on Linux/macOS)
+
+
 ### RSA Key Generation
 
 Demonstrates the mathematics of RSA key generation using small primes for learning purposes.
@@ -76,19 +110,6 @@ python ctr.py
 ```
 
 The script will prompt you to enter the message to be encrypted. It will then generate a random key and counter, and output the ciphertext.
-
-### MP4 Muxing Script
-
-To use the `mux.sh` script to merge `.mp4` video files with `.m4a` audio files, navigate to the directory containing your video and audio files and run the script, providing the directory as an argument:
-
-```bash
-./mux.sh /path/to/your/media/directory
-```
-
-**Important**:
--   The script looks for `.mp4` and `.m4a` files with the same base name (e.g., `video.mp4` and `video.m4a`).
--   It will create a new file named `video.mux.mp4`.
--   **It will remove the original `.mp4` and `.m4a` files upon successful muxing.**
 
 ## Contact
 
