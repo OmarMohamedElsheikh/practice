@@ -70,4 +70,6 @@ while IFS= read  -r -d '' file; do
 	        echo "ERROR: ffmpeg failed on $file — originals kept" >&2
 	        rm -f -- "$output" 2>/dev/null || true
 	    fi
-	done < <(find "$dir" -type f -name "*.mp4" -print0)
+	done < <(find "$dir" -type f -name "*.mp4" -printf '%T@ %p\0' \
+	| sort -z -nr \
+	| cut -z -d' ' -f2-)
