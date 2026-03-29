@@ -3,6 +3,7 @@
 shopt -s nullglob
 
 order=()
+dry_run=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -16,6 +17,10 @@ while [[ $# -gt 0 ]]; do
             [[ -f "$1" ]] || { echo "file not found"; exit 1; }
             mapfile -t order < "$1"
             break
+            ;;
+        --dry-run)
+            dry_run=true
+            shift
             ;;
         *)
             shift
@@ -33,7 +38,12 @@ for title in "${order[@]}"; do
         ext=".${f##*.}"
 
 		new=$(printf "%02d. %s%s" "$i" "$title" "$ext")
-        mv -n  "$f" "${new}"
-        ((i++))
+
+		if [ "$dry_run" = true ]; then
+            echo "mv -n \"$f\" \"$new\""
+        else
+            mv -n "$f" "$new"
+        fi        ((i++))
+
     done
 done
