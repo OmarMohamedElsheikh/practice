@@ -109,29 +109,36 @@ Add the --dry-run flag to see the renames without executing them:
 ### Output example:
 
 ```mv -n "1 Introduction to Neuroscience I [5031rWXgdYo].mux.mp4" "01. Introduction to Neuroscience I.mux.mp4"
-mv -n "1 Introduction to Neuroscience II [uqU9lmFztOU].mux.mp4" "02. Introduction to Neuroscience II.mux.mp4"```
+mv -n "1 Introduction to Neuroscience II [uqU9lmFztOU].mux.mp4" "02. Introduction to Neuroscience II.mux.mp4"
+```
 
 No files are modified in dry-run mode. This is useful to verify the script before running it for real.
 
 **Example**
 
+- It is way so useful when you have downloaded like a youtube playlist and want to organize them just copy the videos titles and 
+	paste them into the file , or you have missed up with the files and want to restore them you can get the ls command with whatever sort you want and feed it to the script
+
 Original filenames:
 
 ```1 Introduction to Neuroscience I [5031rWXgdYo].mux.mp4
 1 Introduction to Neuroscience II [uqU9lmFztOU].mux.mp4
-1 Behavioral Genetics I [e0WZx7lUOrY].mux.mp4```
+1 Behavioral Genetics I [e0WZx7lUOrY].mux.mp4
+```
 
 After running the script with the proper order:
 
 ```01. Introduction to Neuroscience I.mux.mp4
 02. Introduction to Neuroscience II.mux.mp4
-03. Behavioral Genetics I.mux.mp4```
+03. Behavioral Genetics I.mux.mp4
+```
 
 **Notes**
 
 - Filenames are matched based on the title substring.
 - If a file in the order list does not exist in the directory, it is skipped.
 - The script is safe to run multiple times (mv -n prevents overwriting existing files).
+
 ### Requirements
 - **Bash** (tested on GNU Bash 5+)
 - Works on Linux and macOS (with minor modifications for nullglob support)
