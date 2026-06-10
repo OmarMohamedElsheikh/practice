@@ -5,6 +5,9 @@ shopt -s nullglob
 order=()
 dry_run=false
 
+# -------------------------
+# ARG PARSING
+# -------------------------
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --order)
@@ -30,20 +33,43 @@ done
 
 i=1
 
-for title in "${order[@]}"; do
-    for f in *"$title"*; do
-    	echo $f
-        [[ -e "$f" ]] || continue
+# -------------------------
+# MAIN LOOP
+# -------------------------
+for raw_title in "${order[@]}"; do
 
-        ext=".${f##*.}"
+    # trim whitespace
+    title="$(echo "$raw_title" | xargs)"
 
-		new=$(printf "%02d. %s%s" "$i" "$title" "$ext")
+    # skip empty lines
+    [[ -z "$title" ]] && continue
 
-		if [ "$dry_run" = true ]; then
-            echo "mv -n \"$f\" \"$new\""
-        else
-            mv -n "$f" "$new"
-        fi        ((i++))
+    # find matches
+    matches=( *"$title"* )
 
-    done
+    if [[ ${#matches[@]} -eq 0 ]]; then
+        echo "NO MATCH: $title"
+        continue
+    fi
+
+    if [[ ${#matches[@]} -gt 1 ]]; then
+        echo "AMBIGUOUS MATCH: $title"
+        printf '%s\n' "${matches[@]}"
+        continue
+    fi
+
+    f="${matches[0]}"
+
+    ext="${f##*.}"
+
+    new=$(printf "%02d. %s.%s" "$i" "$title" "$ext")
+
+    if [[ "$dry_run" == true ]]; then
+        echo "mv -n -- \"$f\" \"$new\""
+    else
+        mv -n -- "$f" "$new"
+    fi
+
+    ((i++))
+
 done
